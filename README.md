@@ -37,8 +37,6 @@
 <h3 align="center">dockerized "headfull" Chrome and Selenium using xvbf</h3>
 
 I got "headfull" Chrome (as opposed to _headless_ Chrome) and Selenium working in Docker using xvbf.
-[I blogged about it](https://www.texastim.dev/bloglet/dockerized-headfull-chrome) on [texastim.dev](https://www.texastim.dev).
-My actual source files are in the repo here. Check them out, and adapt them for your use cases!
 
 
 
