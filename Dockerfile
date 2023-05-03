@@ -17,7 +17,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY ./main.py .
 
 # chromedriver is required for selenium
-COPY ./lib/chromedriver/Linux/106/chromedriver ./lib/chromedriver/Linux/106/chromedriver
+COPY ./chromedriver/Linux/106/chromedriver ./lib/chromedriver/Linux/106/chromedriver
 
 # now, replace `python3 main.py` with the command invocation that will employ headfull Chrome
 CMD xvfb-run --server-args="-screen 0 1900x1200x24" python3 main.py
