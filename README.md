@@ -129,13 +129,17 @@ This is an example of how to list things you need to use the software and how to
 
 
 <!-- USAGE EXAMPLES -->
-<!-- ## Usage
+## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+```bash
+docker build -t selenium-xvfb-test .
+docker run --rm -v ${PWD}:/app selenium-xvfb-test
+```
 
-_For more examples, please refer to the [Documentation](https://example.com)_
+The `-v ${PWD}:/app` argument means that the demo screenshot taken by the sample program inside the container will appear in the current directory.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p> -->
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 
@@ -232,4 +236,4 @@ Project Link: [https://github.com/timoteostewart/dockerized-headfull-chrome-sele
 [Bootstrap.com]: https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white
 [Bootstrap-url]: https://getbootstrap.com
 [JQuery.com]: https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white
-[JQuery-url]: https://jquery.com 
+[JQuery-url]: https://jquery.com

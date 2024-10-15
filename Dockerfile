@@ -1,23 +1,34 @@
-FROM selenium/standalone-chrome:106.0 as build
+FROM selenium/standalone-chrome:129.0
 
-# isntalling `xvfb` is required for headfull Chrome; it's the virtual screen
-RUN sudo apt update && sudo apt install -y python3-pip xvfb && sudo apt upgrade -y
+USER root
 
-# this line is just for Python
+# install Python3, pip, venv, and Xvfb
+RUN apt-get update && apt-get install -y python3-pip python3-venv xvfb build-essential libffi-dev python3-dev && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# set Python-related environment variables
 ENV PYTHONUNBUFFERED=1
+ENV DISPLAY=:99
 
-# required for headfull Chrome
-ENV DISPLAY=:0
+# create and activate a virtual environment
+RUN python3 -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
 
-# these lines are just for Python
-WORKDIR /home/seluser
-COPY ./requirements.txt .
-RUN pip install --no-cache-dir --upgrade pip
-RUN pip install --no-cache-dir -r requirements.txt
-COPY ./main.py .
+# set up the working directory
+WORKDIR /app
 
-# chromedriver is required for selenium
-COPY ./chromedriver/Linux/106/chromedriver ./lib/chromedriver/Linux/106/chromedriver
+# copy and install requirements.txt
+COPY requirements.txt .
+RUN pip install --no-cache-dir --upgrade pip && pip install --no-cache-dir -r requirements.txt
 
-# now, replace `python3 main.py` with the command invocation that will employ headfull Chrome
-CMD xvfb-run --server-args="-screen 0 1900x1200x24" python3 main.py
+# copy the Python test script
+COPY test_selenium.py .
+
+# ensure correct permissions for /tmp/.X11-unix to prevent Xvfb from issuing warnings
+RUN mkdir -p /tmp/.X11-unix && chmod 1777 /tmp/.X11-unix
+
+# change ownership of venv to seluser and switch users
+RUN chown -R seluser:seluser /opt/venv /app
+USER seluser
+
+# run Xvfb and the Python script
+CMD ["sh", "-c", "Xvfb :99 -ac 2>/dev/null & python3 -u test_selenium.py"]
