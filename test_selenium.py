@@ -1,9 +1,13 @@
 import traceback
+
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
+from webdriver_manager.chrome import ChromeDriverManager
+
 
 def main():
     print("Starting Selenium test...")
@@ -14,7 +18,8 @@ def main():
 
     try:
         print("Initializing webdriver...")
-        driver = webdriver.Chrome(options=chrome_options)
+        service = Service(ChromeDriverManager().install())
+        driver = webdriver.Chrome(service=service, options=chrome_options)
 
         print("Navigating to example.com...")
         driver.get("https://www.example.com")
@@ -34,9 +39,10 @@ def main():
         print("Traceback:")
         traceback.print_exc()
     finally:
-        if 'driver' in locals():
+        if "driver" in locals():
             driver.quit()
         print("Test completed.")
+
 
 if __name__ == "__main__":
     main()
